@@ -11,7 +11,7 @@ const musicSchema=new mongoose.Schema({
   },
   artist:{
     type:mongoose.Schema.Types.ObjectId,
-    ref:"user",
+    ref:"user", //iska mtlb arrist ke andr "user" collection ke andr jo id h vo jaegi
     required:true
   }
 })

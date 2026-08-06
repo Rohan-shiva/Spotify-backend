@@ -88,6 +88,40 @@ async function createAlbum(req,res){
   //   return res.status(401).json({message:"Unauthorized:",err});
   // }
 
+  async function getAllMusic(req,res){
+    const musics=await musicModel
+    .find()
+    .skip(1) // ek song skipkr dena
+    .limit(2); // ek time p 2 song aa skte h
+    // const musics=await musicModel.find().populate("artist"); //populate artist ki saari detail bhi de dega
+
+    res.status(200).json({
+      message:"Musics fetched successfully",
+      musics:musics
+    })
+  }
 
 
-module.exports={createMusic,createAlbum};
+  //for e.g., 10 album h spotify p, each album contain 50 songs so at one time 500 songs will load on screen that can slow down process
+  //to optimize it we use select
+  async function getAllAlbums(req,res){
+    const albums=await albumModel.find().select("title artist").populate("artist","username email"); //populate artist ki saari detail bhi de dega
+
+    res.status(200).json({
+      message:"Albums fetched successfully",
+      albums:albums
+    })
+  }
+
+
+  async function getAlbumById(req,res){
+    const albumId=req.params.albumId;
+
+    const album=await albumModel.findById(albumId).populate("artist","username email");
+
+    return res.status(200).json({
+      message:"Albums created successfully",
+      album:album
+    })
+  }
+module.exports={createMusic,createAlbum,getAllMusic,getAllAlbums,getAlbumById};
